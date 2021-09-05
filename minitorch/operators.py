@@ -116,25 +116,30 @@ def exp(x):
 
 def log_back(x, d):
     r"If :math:`f = log` as above, compute d :math:`d \times f'(x)`"
-    # TODO: Implement for Task 0.1.
-    raise NotImplementedError('Need to implement for Task 0.1')
+    return d / x
 
 
 def inv(x):
     ":math:`f(x) = 1/x`"
-    return 1 / x
+    if x != 0:
+        return 1 / x
+    else:
+        raise ZeroDivisionError
 
 
 def inv_back(x, d):
     r"If :math:`f(x) = 1/x` compute d :math:`d \times f'(x)`"
-    # TODO: Implement for Task 0.1.
-    raise NotImplementedError('Need to implement for Task 0.1')
+    return neg(d / x**2)
 
 
 def relu_back(x, d):
     r"If :math:`f = relu` compute d :math:`d \times f'(x)`"
-    # TODO: Implement for Task 0.1.
-    raise NotImplementedError('Need to implement for Task 0.1')
+    if x > 0:
+        return d
+    elif x == 0:
+        return EPS
+    else:
+        return 0.0
 
 
 # ## Task 0.3
