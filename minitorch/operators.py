@@ -176,7 +176,8 @@ def map(fn):
 
 def negList(ls):
     "Use :func:`map` and :func:`neg` to negate each element in `ls`"
-    return map(neg)
+    neg_list_func = map(neg)
+    return neg_list_func(ls)
 
 
 def zipWith(fn):
@@ -206,10 +207,11 @@ def zipWith(fn):
 
 def addLists(ls1, ls2):
     "Add the elements of `ls1` and `ls2` using :func:`zipWith` and :func:`add`"
-    return zipWith(add)
+    add_lists_func = zipWith(add)
+    return add_lists_func(ls1, ls2)
 
 
-def reduce(fn, start):
+def reduce(fn, start=None):
     r"""
     Higher-order reduce.
 
@@ -225,18 +227,30 @@ def reduce(fn, start):
         :math:`x_1 \ldots x_n` and computes the reduction :math:`fn(x_3, fn(x_2,
         fn(x_1, x_0)))`
     """
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError('Need to implement for Task 0.3')
+    def apply(ls):
+        it = iter(ls)
+        if start is None:
+            value = next(it)
+        else:
+            value = start
+        for element in it:
+            value = fn(value, element)
+        return value
+    return apply
+
+
+INITIAL_VALUE_SUM = 0
+INITIAL_VALUE_MUL = 1
 
 
 def sum(ls):
     "Sum up a list using :func:`reduce` and :func:`add`."
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError('Need to implement for Task 0.3')
+    sum_func = reduce(add, INITIAL_VALUE_SUM)
+    return sum_func(ls)
 
 
 def prod(ls):
     "Product of a list using :func:`reduce` and :func:`mul`."
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError('Need to implement for Task 0.3')
+    sum_func = reduce(mul, INITIAL_VALUE_MUL)
+    return sum_func(ls)
 
