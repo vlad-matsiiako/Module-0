@@ -11,11 +11,14 @@ from minitorch.operators import (
     lt,
     eq,
     max,
+    exp,
+    log,
     sigmoid,
     relu_back,
     log_back,
     inv_back,
     sum,
+    is_close,
 )
 from hypothesis import given
 from hypothesis.strategies import lists
@@ -95,6 +98,9 @@ def test_eq(a):
 # mathematical rules.
 
 
+EPS = 1e-6
+
+
 @pytest.mark.task0_2
 @given(small_floats)
 def test_sigmoid(a):
@@ -104,48 +110,51 @@ def test_sigmoid(a):
     * It crosses 0 at 0.5
     * it is  strictly increasing.
     """
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert sigmoid(a) >= 0.0
+    assert sigmoid(a) <= 1.0
+    assert is_close(1 - sigmoid(a), sigmoid(neg(a)))
+    assert sigmoid(0) == 0.5
+    assert sigmoid(a + EPS) >= sigmoid(a)
 
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
 def test_transitive(a, b, c):
     "Test the transitive property of less-than (a < b and b < c implies a < c)"
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    if (a < b) and (b < c):
+        assert a < c
 
 
 @pytest.mark.task0_2
-def test_symmetric():
+@given(small_floats, small_floats)
+def test_symmetric(a, b):
     """
     Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
-    None
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert mul(a, b) == mul(b, a)
 
 
 @pytest.mark.task0_2
-def test_distribute():
+@given(small_floats, small_floats, small_floats)
+def test_distribute(x, y, z):
     r"""
     Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
-    None
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    assert is_close(mul(z, add(x, y)), add(mul(x, z), mul(y, z)))
 
 
 @pytest.mark.task0_2
-def test_other():
+@given(small_floats, small_floats)
+def test_other(x, y):
     """
-    Write a test that ensures some other property holds for your functions.
+    Write a test that ensures multiplications of two fraction is equal to 1 divided by multiplication of their
+    denominators.
+    "math: `1/x * 1/y = 1/(x*y)`
     """
-    None
-    # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    if x and y:
+        assert is_close(mul(inv(x), inv(y)), inv(mul(x, y)))
 
 
 # ## Task 0.3  - Higher-order functions

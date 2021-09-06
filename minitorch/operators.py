@@ -78,9 +78,9 @@ def sigmoid(x):
         float : sigmoid value
     """
     if lt(0, x):
-        return 1.0 / (add(1.0, math.exp(neg(x))))
+        return 1.0 / add(1.0, exp(neg(x)))
     else:
-        return math.pow(math.e, neg(x)) / (1.0 + math.exp(neg(x)))
+        return exp(x) / add(1.0, exp(x))
 
 
 def relu(x):
@@ -106,7 +106,10 @@ EPS = 1e-6
 
 def log(x):
     ":math:`f(x) = log(x)`"
-    return math.log(x + EPS)
+    if x > 0:
+        return math.log(x)
+    else:
+        raise ValueError
 
 
 def exp(x):
